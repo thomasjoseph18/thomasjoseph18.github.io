@@ -22,7 +22,7 @@ document.querySelectorAll(".nav-links a").forEach(link => {
 // ===========================
 
 const words = [
-    "AI and Data SCience Student",
+    "AI and Data Science Student",
     "Web Developer",
     "Frontend Developer",
     "Programmer",
