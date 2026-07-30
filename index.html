@@ -1,86 +1,184 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thomas Joseph | Portfolio</title>
 
-<title>Personal Portfolio</title>
+    <link rel="stylesheet" href="style.css">
 
-<link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
-<link
-href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
-rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
+    <link rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
 </head>
 
 <body>
 
+<!-- ================= NAVBAR ================= -->
+
 <header>
 
-<nav>
+<nav class="navbar">
 
-<h2 class="logo">Portfolio</h2>
+<h2 class="logo">Thomas.</h2>
 
 <ul class="nav-links">
 
 <li><a href="#home">Home</a></li>
+
 <li><a href="#about">About</a></li>
+
 <li><a href="#skills">Skills</a></li>
+
 <li><a href="#projects">Projects</a></li>
+
 <li><a href="#contact">Contact</a></li>
 
 </ul>
 
 <div class="menu-btn">
+
 <i class="fas fa-bars"></i>
+
 </div>
 
 </nav>
 
 </header>
 
-<!-- HERO -->
+<!-- ================= HERO ================= -->
 
 <section id="home" class="hero">
 
-<div class="hero-content">
+<div class="hero-text">
 
 <h3>Hello, I'm</h3>
 
-<h1>Your Name</h1>
+<h1>Thomas Joseph</h1>
 
 <h2><span class="typing"></span></h2>
 
 <p>
-Passionate developer creating beautiful and functional web experiences.
+
+B.Tech Student at Cochin University of Science and Technology (CUSAT).
+Passionate about Web Development, Programming and creating modern,
+responsive websites.
+
 </p>
+
+<div class="hero-buttons">
 
 <a href="#projects" class="btn">View Projects</a>
 
+<a href="#contact" class="btn btn-outline">Contact Me</a>
+
+</div>
+
+<div class="social-icons">
+
+<a href="https://github.com/thomasjoseph18" target="_blank">
+
+<i class="fab fa-github"></i>
+
+</a>
+
+<a href="https://www.linkedin.com/in/thomas-joseph-07a1b4426" target="_blank">
+
+<i class="fab fa-linkedin"></i>
+
+</a>
+
+<a href="https://instagram.com/thomas_jozph" target="_blank">
+
+<i class="fab fa-instagram"></i>
+
+</a>
+
+</div>
+
+</div>
+
+<div class="hero-image">
+
+<img src="images/profile.jpg" alt="Thomas Joseph">
+
 </div>
 
 </section>
 
-<!-- ABOUT -->
+<!-- ================= ABOUT ================= -->
 
 <section id="about">
 
-<h2 class="section-title">About Me</h2>
+<h2 class="section-title">
+
+About Me
+
+</h2>
 
 <div class="about-container">
 
+<div class="about-image">
+
+<img src="images/profile.jpg" alt="Thomas">
+
+</div>
+
 <div class="about-text">
+
+<h3>Who am I?</h3>
 
 <p>
 
-I am a passionate web developer with experience in HTML,
-CSS, JavaScript and modern web technologies.
+I'm Thomas Joseph, a B.Tech student at Cochin University of Science and
+Technology (CUSAT), Kerala.
 
-I enjoy building responsive websites that are fast,
-beautiful and user-friendly.
+I enjoy learning new technologies and building responsive web applications.
+
+My interests include Frontend Development, UI/UX Design, JavaScript,
+and Open Source.
 
 </p>
+
+<div class="info-grid">
+
+<div>
+
+<strong>Name</strong>
+
+<p>Thomas Joseph</p>
+
+</div>
+
+<div>
+
+<strong>Education</strong>
+
+<p>B.Tech - CUSAT</p>
+
+</div>
+
+<div>
+
+<strong>Location</strong>
+
+<p>Kerala, India</p>
+
+</div>
+
+<div>
+
+<strong>Email</strong>
+
+<p>your-email@example.com</p>
+
+</div>
+
+</div>
 
 </div>
 
@@ -88,71 +186,168 @@ beautiful and user-friendly.
 
 </section>
 
-<!-- SKILLS -->
+<!-- ================= SKILLS ================= -->
 
 <section id="skills">
 
-<h2 class="section-title">Skills</h2>
+<h2 class="section-title">
+
+Skills
+
+</h2>
 
 <div class="skills-container">
 
-<div class="skill-card">HTML</div>
+<div class="skill-box">
 
-<div class="skill-card">CSS</div>
+<i class="fab fa-html5"></i>
 
-<div class="skill-card">JavaScript</div>
+<h3>HTML5</h3>
 
-<div class="skill-card">React</div>
+</div>
 
-<div class="skill-card">Python</div>
+<div class="skill-box">
 
-<div class="skill-card">C++</div>
+<i class="fab fa-css3-alt"></i>
+
+<h3>CSS3</h3>
+
+</div>
+
+<div class="skill-box">
+
+<i class="fab fa-js"></i>
+
+<h3>JavaScript</h3>
+
+</div>
+
+<div class="skill-box">
+
+<i class="fab fa-python"></i>
+
+<h3>Python</h3>
+
+</div>
+
+<div class="skill-box">
+
+<i class="fas fa-code"></i>
+
+<h3>C Programming</h3>
+
+</div>
+
+<div class="skill-box">
+
+<i class="fas fa-laptop-code"></i>
+
+<h3>C++</h3>
+
+</div>
+
+<div class="skill-box">
+
+<i class="fab fa-git-alt"></i>
+
+<h3>Git</h3>
+
+</div>
+
+<div class="skill-box">
+
+<i class="fab fa-github"></i>
+
+<h3>GitHub</h3>
+
+</div>
 
 </div>
 
 </section>
 
-<!-- PROJECTS -->
+<!-- ================= PROJECTS ================= -->
 
 <section id="projects">
 
-<h2 class="section-title">Projects</h2>
+<h2 class="section-title">
 
-<div class="project-container">
+Projects
+
+</h2>
+
+<div class="projects-container">
 
 <div class="project-card">
 
-<h3>Portfolio Website</h3>
+<img src="images/project1.jpg" alt="Project">
+
+<div class="project-content">
+
+<h3>Personal Portfolio</h3>
 
 <p>
-Modern responsive portfolio website.
+
+Modern responsive portfolio website built using HTML,
+CSS and JavaScript.
+
 </p>
 
-<a href="#">View</a>
+<a href="#" class="project-btn">
+
+View Project
+
+</a>
+
+</div>
 
 </div>
 
 <div class="project-card">
+
+<img src="images/project2.jpg" alt="Project">
+
+<div class="project-content">
 
 <h3>Weather App</h3>
 
 <p>
-Weather application using API.
+
+Weather forecasting application using API integration.
+
 </p>
 
-<a href="#">View</a>
+<a href="#" class="project-btn">
+
+View Project
+
+</a>
+
+</div>
 
 </div>
 
 <div class="project-card">
 
-<h3>Todo App</h3>
+<img src="images/project3.jpg" alt="Project">
+
+<div class="project-content">
+
+<h3>Coming Soon</h3>
 
 <p>
-Task management application.
+
+More exciting projects will be added soon.
+
 </p>
 
-<a href="#">View</a>
+<a href="#" class="project-btn">
+
+GitHub
+
+</a>
+
+</div>
 
 </div>
 
@@ -160,29 +355,130 @@ Task management application.
 
 </section>
 
-<!-- CONTACT -->
+<!-- ================= CONTACT ================= -->
 
 <section id="contact">
 
-<h2 class="section-title">Contact</h2>
+<h2 class="section-title">
+
+Contact Me
+
+</h2>
+
+<div class="contact-container">
+
+<div class="contact-info">
+
+<h3>Let's Connect!</h3>
+
+<p>
+
+I'm always open to internships, collaborations and
+new opportunities.
+
+</p>
+
+<div class="contact-item">
+
+<i class="fas fa-location-dot"></i>
+
+<span>Kerala, India</span>
+
+</div>
+
+<div class="contact-item">
+
+<i class="fab fa-github"></i>
+
+<a href="https://github.com/thomasjoseph18">
+
+github.com/thomasjoseph18
+
+</a>
+
+</div>
+
+<div class="contact-item">
+
+<i class="fab fa-linkedin"></i>
+
+<a href="https://www.linkedin.com/in/thomas-joseph-07a1b4426">
+
+LinkedIn Profile
+
+</a>
+
+</div>
+
+<div class="contact-item">
+
+<i class="fab fa-instagram"></i>
+
+<a href="https://instagram.com/thomas_jozph">
+
+@thomas_jozph
+
+</a>
+
+</div>
+
+</div>
 
 <form>
 
-<input type="text" placeholder="Your Name">
+<input type="text" placeholder="Your Name" required>
 
-<input type="email" placeholder="Your Email">
+<input type="email" placeholder="Your Email" required>
 
-<textarea placeholder="Message"></textarea>
+<input type="text" placeholder="Subject">
 
-<button type="submit">Send</button>
+<textarea placeholder="Your Message"></textarea>
+
+<button type="submit">
+
+Send Message
+
+</button>
 
 </form>
 
+</div>
+
 </section>
+
+<!-- ================= FOOTER ================= -->
 
 <footer>
 
-<p>© 2026 Your Name | All Rights Reserved</p>
+<h2>Thomas Joseph</h2>
+
+<p>
+
+Designed & Developed by Thomas Joseph © 2026
+
+</p>
+
+<div class="footer-icons">
+
+<a href="https://github.com/thomasjoseph18">
+
+<i class="fab fa-github"></i>
+
+</a>
+
+<a href="https://www.linkedin.com/in/thomas-joseph-07a1b4426">
+
+<i class="fab fa-linkedin"></i>
+
+</a>
+
+<a href="https://instagram.com/thomas_jozph">
+
+<i class="fab fa-instagram"></i>
+
+</a>
+
+</div>
 
 </footer>
 
