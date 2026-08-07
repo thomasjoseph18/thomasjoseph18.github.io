@@ -1,565 +1,261 @@
-/*=========================================
-PORTFOLIO SCRIPT
-Thomas Joseph Portfolio
-Part 4A
-=========================================*/
-
-document.addEventListener("DOMContentLoaded", () => {
-
-    /*=========================
-      MOBILE MENU
-    =========================*/
-
-    const menuBtn = document.querySelector(".menu-btn");
-
-    const navMenu = document.querySelector(".navbar ul");
-
-    menuBtn.addEventListener("click", () => {
-
-        navMenu.classList.toggle("active");
-
-    });
-
-    document.querySelectorAll(".navbar a").forEach(link => {
-
-        link.addEventListener("click", () => {
-
-            navMenu.classList.remove("active");
-
-        });
-
-    });
-
-    /*=========================
-      SMOOTH SCROLL
-    =========================*/
-
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-
-        anchor.addEventListener("click", function (e) {
-
-            e.preventDefault();
-
-            const target = document.querySelector(this.getAttribute("href"));
-
-            if (target) {
-
-                target.scrollIntoView({
-
-                    behavior: "smooth"
-
-                });
-
-            }
-
-        });
-
-    });
-
-    /*=========================
-      ACTIVE NAV LINK
-    =========================*/
-
-    const sections = document.querySelectorAll("section");
-
-    const navLinks = document.querySelectorAll(".navbar ul li a");
-
-    window.addEventListener("scroll", () => {
-
-        let current = "";
-
-        sections.forEach(section => {
-
-            const sectionTop = section.offsetTop - 120;
-
-            const sectionHeight = section.clientHeight;
-
-            if (pageYOffset >= sectionTop) {
-
-                current = section.getAttribute("id");
-
-            }
-
-        });
-
-        navLinks.forEach(link => {
-
-            link.classList.remove("active");
-
-            if (link.getAttribute("href") === "#" + current) {
-
-                link.classList.add("active");
-
-            }
-
-        });
-
-    });
-
-    /*=========================
-      FETCH GITHUB PROJECTS
-    =========================*/
-
-    const username = "thomasjoseph18";
-
-    const container = document.getElementById("projects-container");
-
-    fetch(`https://api.github.com/users/${username}/repos?sort=updated`)
-
-        .then(response => response.json())
-
-        .then(repositories => {
-
-            container.innerHTML = "";
-
-            repositories.forEach(repo => {
-
-                if (repo.fork) return;
-
-                const card = document.createElement("div");
-
-                card.className = "project-card";
-
-                card.innerHTML = `
-
-                <h3>${repo.name}</h3>
-
-                <p>${repo.description || "No description available."}</p>
-
-                <div class="tags">
-
-                <span>${repo.language || "Code"}</span>
-
-                <span>⭐ ${repo.stargazers_count}</span>
-
-                </div>
-
-                <a href="${repo.html_url}"
-
-                target="_blank">
-
-                View Project
-
-                </a>
-
-                `;
-
-                container.appendChild(card);
-
-            });
-
-        })
-
-        .catch(() => {
-
-            container.innerHTML =
-
-                "<p>Unable to load GitHub repositories.</p>";
-
-        });
-
-    /*=========================
-      GSAP INTRO
-    =========================*/
-
-    gsap.from(".hero h1", {
-
-        opacity: 0,
-
-        y: 60,
-
-        duration: 1,
-
-        ease: "power4.out"
-
-    });
-
-    gsap.from(".hero h2", {
-
-        opacity: 0,
-
-        y: 50,
-
-        delay: .3,
-
-        duration: 1
-
-    });
-
-    gsap.from(".hero-text", {
-
-        opacity: 0,
-
-        y: 50,
-
-        delay: .5,
-
-        duration: 1
-
-    });
-
-    gsap.from(".buttons", {
-
-        opacity: 0,
-
-        y: 40,
-
-        delay: .8,
-
-        duration: 1
-
-    });
-
-    gsap.from(".socials a", {
-
-        opacity: 0,
-
-        y: 20,
-
-        stagger: .1,
-
-        delay: 1,
-
-        duration: .8
-
-    });
-
-    gsap.from(".image-box", {
-
-        opacity: 0,
-
-        scale: .7,
-
-        duration: 1.3,
-
-        ease: "back.out(1.7)"
-
-    });
-
-    /*=========================
-      REVEAL ON SCROLL
-    =========================*/
-
-    const revealItems = document.querySelectorAll(
-
-        ".glass-card,.skill,.project-card"
-
-    );
-
-    const observer = new IntersectionObserver(entries => {
-
-        entries.forEach(entry => {
-
-            if (entry.isIntersecting) {
-
-                entry.target.classList.add("show");
-
-            }
-
-        });
-
-    }, {
-
-        threshold: .15
-
-    });
-
-    revealItems.forEach(item => {
-
-        item.classList.add("fade-up");
-
-        observer.observe(item);
-
-    });
-
+// ===========================
+// Mobile Navigation
+// ===========================
+
+const menuBtn = document.querySelector(".menu-btn");
+const navLinks = document.querySelector(".nav-links");
+
+menuBtn.addEventListener("click", () => {
+    navLinks.classList.toggle("active");
 });
-/*=============================
-TYPEWRITER EFFECT
-=============================*/
 
-const typingElement = document.querySelector(".hero h2");
+// Close mobile menu after clicking a link
+document.querySelectorAll(".nav-links a").forEach(link => {
+    link.addEventListener("click", () => {
+        navLinks.classList.remove("active");
+    });
+});
+
+
+// ===========================
+// Typing Animation
+// ===========================
 
 const words = [
-    "AI & Data Science Student",
-    "Python Developer",
-    "Machine Learning Enthusiast",
+    "B.Tech Student",
     "Web Developer",
-    "Open Source Learner"
+    "Frontend Developer",
+    "Programmer",
+    "UI Enthusiast"
 ];
 
 let wordIndex = 0;
-let letterIndex = 0;
+let charIndex = 0;
 let deleting = false;
+
+const typingElement = document.querySelector(".typing");
 
 function typeEffect() {
 
-    const current = words[wordIndex];
+    const currentWord = words[wordIndex];
 
     if (!deleting) {
-
-        typingElement.textContent =
-            current.substring(0, letterIndex++);
-
-        if (letterIndex > current.length) {
-
-            deleting = true;
-
-            setTimeout(typeEffect, 1500);
-
-            return;
-        }
-
+        typingElement.textContent = currentWord.substring(0, charIndex++);
     } else {
-
-        typingElement.textContent =
-            current.substring(0, letterIndex--);
-
-        if (letterIndex < 0) {
-
-            deleting = false;
-
-            wordIndex++;
-
-            if (wordIndex >= words.length)
-                wordIndex = 0;
-
-        }
-
+        typingElement.textContent = currentWord.substring(0, charIndex--);
     }
 
-    setTimeout(typeEffect, deleting ? 50 : 100);
+    let speed = deleting ? 60 : 120;
 
+    if (!deleting && charIndex === currentWord.length + 1) {
+        deleting = true;
+        speed = 1500;
+    }
+
+    if (deleting && charIndex === 0) {
+        deleting = false;
+        wordIndex = (wordIndex + 1) % words.length;
+        speed = 300;
+    }
+
+    setTimeout(typeEffect, speed);
 }
 
 typeEffect();
 
-/*=============================
-SCROLL PROGRESS BAR
-=============================*/
 
-const progress = document.createElement("div");
+// ===========================
+// Scroll Reveal Animation
+// ===========================
 
-progress.style.position = "fixed";
-progress.style.left = "0";
-progress.style.top = "0";
-progress.style.height = "4px";
-progress.style.width = "0";
-progress.style.zIndex = "99999";
-progress.style.background =
-"linear-gradient(90deg,#8b5cf6,#22d3ee)";
+const hiddenElements = document.querySelectorAll("section");
 
-document.body.appendChild(progress);
+const observer = new IntersectionObserver((entries) => {
 
-window.addEventListener("scroll", () => {
+    entries.forEach(entry => {
 
-    const total =
-        document.documentElement.scrollHeight -
-        window.innerHeight;
-
-    const percent =
-        window.scrollY / total * 100;
-
-    progress.style.width = percent + "%";
-
-});
-
-/*=============================
-SCROLL TO TOP
-=============================*/
-
-const topBtn = document.createElement("button");
-
-topBtn.innerHTML =
-'<i class="fa-solid fa-arrow-up"></i>';
-
-topBtn.className = "top-btn";
-
-document.body.appendChild(topBtn);
-
-topBtn.style.position = "fixed";
-topBtn.style.bottom = "30px";
-topBtn.style.right = "30px";
-topBtn.style.width = "55px";
-topBtn.style.height = "55px";
-topBtn.style.borderRadius = "50%";
-topBtn.style.border = "none";
-topBtn.style.cursor = "pointer";
-topBtn.style.background =
-"linear-gradient(135deg,#8b5cf6,#2563eb)";
-topBtn.style.color = "#fff";
-topBtn.style.display = "none";
-topBtn.style.zIndex = "999";
-
-window.addEventListener("scroll", () => {
-
-    if (window.scrollY > 500)
-        topBtn.style.display = "block";
-    else
-        topBtn.style.display = "none";
-
-});
-
-topBtn.onclick = () => {
-
-    window.scrollTo({
-
-        top:0,
-
-        behavior:"smooth"
+        if (entry.isIntersecting) {
+            entry.target.classList.add("show");
+        }
 
     });
 
-};
-
-/*=============================
-PARALLAX IMAGE
-=============================*/
-
-const image =
-document.querySelector(".image-box");
-
-document.addEventListener("mousemove", e=>{
-
-    const x =
-    (window.innerWidth/2-e.clientX)/40;
-
-    const y =
-    (window.innerHeight/2-e.clientY)/40;
-
-    image.style.transform =
-    `translate(${x}px,${y}px)`;
-
+}, {
+    threshold: 0.15
 });
 
-/*=============================
-AURORA PARALLAX
-=============================*/
+hiddenElements.forEach(section => {
+    section.classList.add("hidden");
+    observer.observe(section);
+});
 
-const blobs =
-document.querySelectorAll(".aurora span");
 
-document.addEventListener("mousemove",e=>{
+// ===========================
+// Active Navigation
+// ===========================
 
-    blobs.forEach((blob,index)=>{
+const sections = document.querySelectorAll("section");
+const navItems = document.querySelectorAll(".nav-links a");
 
-        const speed=(index+1)*10;
+window.addEventListener("scroll", () => {
 
-        blob.style.transform=
-        `translate(${e.clientX/speed}px,
-        ${e.clientY/speed}px)`;
+    let current = "";
+
+    sections.forEach(section => {
+
+        const sectionTop = section.offsetTop - 180;
+
+        if (window.scrollY >= sectionTop) {
+            current = section.getAttribute("id");
+        }
+
+    });
+
+    navItems.forEach(link => {
+
+        link.classList.remove("active");
+
+        if (link.getAttribute("href") === "#" + current) {
+            link.classList.add("active");
+        }
 
     });
 
 });
 
-/*=============================
-SKILL HOVER GLOW
-=============================*/
 
-document.querySelectorAll(".skill")
-.forEach(card=>{
+// ===========================
+// Sticky Navbar Shadow
+// ===========================
 
-card.addEventListener("mousemove",e=>{
+const header = document.querySelector("header");
 
-const rect=
-card.getBoundingClientRect();
+window.addEventListener("scroll", () => {
 
-const x=e.clientX-rect.left;
+    if (window.scrollY > 40) {
+        header.style.boxShadow = "0 5px 20px rgba(0,0,0,.35)";
+    } else {
+        header.style.boxShadow = "none";
+    }
 
-const y=e.clientY-rect.top;
+});
 
-card.style.background=
-`radial-gradient(circle at ${x}px ${y}px,
-rgba(139,92,246,.5),
-rgba(255,255,255,.08))`;
+
+// ===========================
+// Smooth Scroll
+// ===========================
+
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+
+    anchor.addEventListener("click", function (e) {
+
+        e.preventDefault();
+
+        document.querySelector(this.getAttribute("href"))
+            .scrollIntoView({
+                behavior: "smooth"
+            });
+
+    });
+
+});
+
+
+// ===========================
+// Contact Form
+// ===========================
+
+const form = document.querySelector("form");
+
+form.addEventListener("submit", function(e){
+
+    e.preventDefault();
+
+    alert("Thank you! Your message has been received.");
+
+    form.reset();
+
+});
+
+
+// ===========================
+// Image Hover Animation
+// ===========================
+
+const profile = document.querySelector(".hero-image img");
+
+if(profile){
+
+profile.addEventListener("mouseenter",()=>{
+
+profile.style.transform="scale(1.05) rotate(2deg)";
+
+});
+
+profile.addEventListener("mouseleave",()=>{
+
+profile.style.transform="scale(1) rotate(0deg)";
+
+});
+
+}
+
+
+// ===========================
+// Skill Card Animation
+// ===========================
+
+const skills = document.querySelectorAll(".skill-box");
+
+skills.forEach(skill=>{
+
+skill.addEventListener("mouseenter",()=>{
+
+skill.style.transform="translateY(-10px)";
+
+});
+
+skill.addEventListener("mouseleave",()=>{
+
+skill.style.transform="translateY(0px)";
+
+});
+
+});
+
+
+// ===========================
+// Project Card Animation
+// ===========================
+
+const cards=document.querySelectorAll(".project-card");
+
+cards.forEach(card=>{
+
+card.addEventListener("mouseenter",()=>{
+
+card.style.transform="translateY(-12px)";
 
 });
 
 card.addEventListener("mouseleave",()=>{
 
-card.style.background=
-"rgba(255,255,255,.08)";
+card.style.transform="translateY(0px)";
 
 });
 
 });
 
-/*=============================
-CUSTOM CURSOR
-=============================*/
 
-const cursor =
-document.createElement("div");
+// ===========================
+// Footer Year
+// ===========================
 
-cursor.style.width="18px";
-cursor.style.height="18px";
-cursor.style.borderRadius="50%";
-cursor.style.position="fixed";
-cursor.style.pointerEvents="none";
-cursor.style.background="#22d3ee";
-cursor.style.boxShadow=
-"0 0 20px #22d3ee";
-cursor.style.zIndex="999999";
+const footerText = document.querySelector("footer p");
 
-document.body.appendChild(cursor);
-
-window.addEventListener("mousemove",e=>{
-
-cursor.style.left=e.clientX-9+"px";
-
-cursor.style.top=e.clientY-9+"px";
-
-});
-
-/*=============================
-FLOATING EFFECT
-=============================*/
-
-gsap.to(".image-box",{
-
-y:-18,
-
-duration:3,
-
-repeat:-1,
-
-yoyo:true,
-
-ease:"power1.inOut"
-
-});
-
-/*=============================
-ROTATING SKILLS
-=============================*/
-
-gsap.utils.toArray(".skill").forEach(skill=>{
-
-gsap.from(skill,{
-
-opacity:0,
-
-y:40,
-
-duration:1,
-
-scrollTrigger:{
-
-trigger:skill,
-
-start:"top 85%"
-
+if (footerText) {
+    footerText.innerHTML =
+        `Designed & Developed by Thomas Joseph © ${new Date().getFullYear()}`;
 }
 
-});
-
-});
-
-/*=============================
-CONSOLE MESSAGE
-=============================*/
-
-console.log(
-"%cPortfolio designed by Thomas Joseph",
-"color:#8b5cf6;font-size:18px;font-weight:bold;"
-);
+console.log("Portfolio Loaded Successfully 🚀");
