@@ -434,22 +434,17 @@ justify-content:center;
 
 }
 
+
 .image-box{
-
-width:420px;
-
-height:420px;
-
-border-radius:50%;
-
-padding:8px;
-
-background:linear-gradient(135deg,#8b5cf6,#06b6d4);
-
-animation:rotateBorder 10s linear infinite;
-
+    position: relative;
+    width: 420px;
+    height: 420px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
 }
-
 .image-box img{
 
 width:100%;
@@ -461,20 +456,6 @@ border-radius:50%;
 object-fit:cover;
 
 border:6px solid #050816;
-
-}
-
-@keyframes rotateBorder{
-
-0%{
-
-transform:rotate(0deg);
-
-}
-
-100%{
-
-transform:rotate(360deg);
 
 }
 
@@ -1300,4 +1281,45 @@ padding:25px;
 
 }
 
+}
+.image-box::before{
+        content:"";
+            position:absolute;
+                width:150%;
+                    height:150%;
+                        background:conic-gradient(
+                                #8b5cf6,
+                                        #06b6d4,
+                                                #3b82f6,
+                                                        #8b5cf6
+                                                            );
+                                                                animation:spin 6s linear infinite;
+                                                                }
+
+                                                                .image-box::after{
+                                                                    content:"";
+                                                                        position:absolute;
+                                                                            inset:8px;
+                                                                                border-radius:50%;
+                                                                                    background:#050816;
+                                                                                    }
+
+                                                                                    .image-box img{
+                                                                                        position:relative;
+                                                                                            z-index:2;
+                                                                                                width:calc(100% - 16px);
+                                                                                                    height:calc(100% - 16px);
+                                                                                                        object-fit:cover;
+                                                                                                            object-position:center;
+                                                                                                                border-radius:50%;
+                                                                                                                }
+
+                                                                                                                @keyframes spin{
+                                                                                                                    from{
+                                                                                                                            transform:rotate(0deg);
+                                                                                                                                }
+                                                                                                                                    to{
+                                                                                                                                            transform:rotate(360deg);
+                                                                                                                                                }
+                                                                                                                                                }
 }
