@@ -1,565 +1,209 @@
-/*=========================================
-PORTFOLIO SCRIPT
-Thomas Joseph Portfolio
-Part 4A
-=========================================*/
-
-document.addEventListener("DOMContentLoaded", () => {
-
-    /*=========================
-      MOBILE MENU
-    =========================*/
-
-    const menuBtn = document.querySelector(".menu-btn");
-
-    const navMenu = document.querySelector(".navbar ul");
-
-    menuBtn.addEventListener("click", () => {
-
-        navMenu.classList.toggle("active");
-
-    });
-
-    document.querySelectorAll(".navbar a").forEach(link => {
-
-        link.addEventListener("click", () => {
-
-            navMenu.classList.remove("active");
-
-        });
-
-    });
-
-    /*=========================
-      SMOOTH SCROLL
-    =========================*/
-
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-
-        anchor.addEventListener("click", function (e) {
-
-            e.preventDefault();
-
-            const target = document.querySelector(this.getAttribute("href"));
-
-            if (target) {
-
-                target.scrollIntoView({
-
-                    behavior: "smooth"
-
-                });
-
-            }
-
-        });
-
-    });
-
-    /*=========================
-      ACTIVE NAV LINK
-    =========================*/
-
-    const sections = document.querySelectorAll("section");
-
-    const navLinks = document.querySelectorAll(".navbar ul li a");
-
-    window.addEventListener("scroll", () => {
-
-        let current = "";
-
-        sections.forEach(section => {
-
-            const sectionTop = section.offsetTop - 120;
-
-            const sectionHeight = section.clientHeight;
-
-            if (pageYOffset >= sectionTop) {
-
-                current = section.getAttribute("id");
-
-            }
-
-        });
-
-        navLinks.forEach(link => {
-
-            link.classList.remove("active");
-
-            if (link.getAttribute("href") === "#" + current) {
-
-                link.classList.add("active");
-
-            }
-
-        });
-
-    });
-
-    /*=========================
-      FETCH GITHUB PROJECTS
-    =========================*/
-
-    const username = "thomasjoseph18";
-
-    const container = document.getElementById("projects-container");
-
-    fetch(`https://api.github.com/users/${username}/repos?sort=updated`)
-
-        .then(response => response.json())
-
-        .then(repositories => {
-
-            container.innerHTML = "";
-
-            repositories.forEach(repo => {
-
-                if (repo.fork) return;
-
-                const card = document.createElement("div");
-
-                card.className = "project-card";
-
-                card.innerHTML = `
-
-                <h3>${repo.name}</h3>
-
-                <p>${repo.description || "No description available."}</p>
-
-                <div class="tags">
-
-                <span>${repo.language || "Code"}</span>
-
-                <span>⭐ ${repo.stargazers_count}</span>
-
-                </div>
-
-                <a href="${repo.html_url}"
-
-                target="_blank">
-
-                View Project
-
-                </a>
-
-                `;
-
-                container.appendChild(card);
-
-            });
-
-        })
-
-        .catch(() => {
-
-            container.innerHTML =
-
-                "<p>Unable to load GitHub repositories.</p>";
-
-        });
-
-    /*=========================
-      GSAP INTRO
-    =========================*/
-
-    gsap.from(".hero h1", {
-
-        opacity: 0,
-
-        y: 60,
-
-        duration: 1,
-
-        ease: "power4.out"
-
-    });
-
-    gsap.from(".hero h2", {
-
-        opacity: 0,
-
-        y: 50,
-
-        delay: .3,
-
-        duration: 1
-
-    });
-
-    gsap.from(".hero-text", {
-
-        opacity: 0,
-
-        y: 50,
-
-        delay: .5,
-
-        duration: 1
-
-    });
-
-    gsap.from(".buttons", {
-
-        opacity: 0,
-
-        y: 40,
-
-        delay: .8,
-
-        duration: 1
-
-    });
-
-    gsap.from(".socials a", {
-
-        opacity: 0,
-
-        y: 20,
-
-        stagger: .1,
-
-        delay: 1,
-
-        duration: .8
-
-    });
-
-    gsap.from(".image-box", {
-
-        opacity: 0,
-
-        scale: .7,
-
-        duration: 1.3,
-
-        ease: "back.out(1.7)"
-
-    });
-
-    /*=========================
-      REVEAL ON SCROLL
-    =========================*/
-
-    const revealItems = document.querySelectorAll(
-
-        ".glass-card,.skill,.project-card"
-
-    );
-
-    const observer = new IntersectionObserver(entries => {
-
-        entries.forEach(entry => {
-
-            if (entry.isIntersecting) {
-
-                entry.target.classList.add("show");
-
-            }
-
-        });
-
-    }, {
-
-        threshold: .15
-
-    });
-
-    revealItems.forEach(item => {
-
-        item.classList.add("fade-up");
-
-        observer.observe(item);
-
-    });
-
+/* =====================================================
+   THOMAS JOSEPH — PORTFOLIO  |  main.js
+   ===================================================== */
+
+"use strict";
+
+/* ─── SMOOTH SCROLL (native fallback) ─── */
+document.querySelectorAll('a[href^="#"]').forEach(link => {
+  link.addEventListener('click', e => {
+    e.preventDefault();
+    const target = document.querySelector(link.getAttribute('href'));
+    if (target) {
+      target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+    // close mobile menu
+    mobileMenu.classList.remove('open');
+    hamburger.classList.remove('active');
+  });
 });
-/*=============================
-TYPEWRITER EFFECT
-=============================*/
 
-const typingElement = document.querySelector(".hero h2");
+/* ─── NAV SCROLL EFFECT ─── */
+const nav = document.getElementById('nav');
+const backTop = document.getElementById('backTop');
 
-const words = [
-    "AI & Data Science Student",
-    "Python Developer",
-    "Machine Learning Enthusiast",
-    "Web Developer",
-    "Open Source Learner"
+window.addEventListener('scroll', () => {
+  if (window.scrollY > 60) {
+    nav.classList.add('scrolled');
+    backTop.classList.add('show');
+  } else {
+    nav.classList.remove('scrolled');
+    backTop.classList.remove('show');
+  }
+}, { passive: true });
+
+backTop.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+
+/* ─── HAMBURGER MENU ─── */
+const hamburger = document.getElementById('hamburger');
+const mobileMenu = document.getElementById('mobileMenu');
+
+hamburger.addEventListener('click', () => {
+  hamburger.classList.toggle('active');
+  mobileMenu.classList.toggle('open');
+});
+
+/* ─── CUSTOM CURSOR ─── */
+const cursor = document.getElementById('cursor');
+const cursorFollower = document.getElementById('cursorFollower');
+
+let mouseX = 0, mouseY = 0;
+let followerX = 0, followerY = 0;
+
+document.addEventListener('mousemove', e => {
+  mouseX = e.clientX;
+  mouseY = e.clientY;
+  cursor.style.left = mouseX + 'px';
+  cursor.style.top  = mouseY + 'px';
+});
+
+(function animateFollower() {
+  followerX += (mouseX - followerX) * 0.12;
+  followerY += (mouseY - followerY) * 0.12;
+  cursorFollower.style.left = followerX + 'px';
+  cursorFollower.style.top  = followerY + 'px';
+  requestAnimationFrame(animateFollower);
+})();
+
+/* hide default cursor when inside viewport */
+document.addEventListener('mouseleave', () => {
+  cursor.style.opacity = '0';
+  cursorFollower.style.opacity = '0';
+});
+document.addEventListener('mouseenter', () => {
+  cursor.style.opacity = '1';
+  cursorFollower.style.opacity = '1';
+});
+
+/* ─── TYPEWRITER ─── */
+const phrases = [
+  'AI & Data Science Student',
+  'Machine Learning Enthusiast',
+  'Open Source Contributor',
+  'Web Developer',
+  'Problem Solver',
 ];
 
-let wordIndex = 0;
-let letterIndex = 0;
-let deleting = false;
+const twEl = document.getElementById('typewriter');
+let pIdx = 0, cIdx = 0, deleting = false;
 
-function typeEffect() {
-
-    const current = words[wordIndex];
-
-    if (!deleting) {
-
-        typingElement.textContent =
-            current.substring(0, letterIndex++);
-
-        if (letterIndex > current.length) {
-
-            deleting = true;
-
-            setTimeout(typeEffect, 1500);
-
-            return;
-        }
-
-    } else {
-
-        typingElement.textContent =
-            current.substring(0, letterIndex--);
-
-        if (letterIndex < 0) {
-
-            deleting = false;
-
-            wordIndex++;
-
-            if (wordIndex >= words.length)
-                wordIndex = 0;
-
-        }
-
+function typewriter() {
+  const current = phrases[pIdx];
+  if (!deleting) {
+    twEl.textContent = current.slice(0, ++cIdx);
+    if (cIdx === current.length) {
+      deleting = true;
+      setTimeout(typewriter, 2000);
+      return;
     }
-
-    setTimeout(typeEffect, deleting ? 50 : 100);
-
+    setTimeout(typewriter, 70);
+  } else {
+    twEl.textContent = current.slice(0, --cIdx);
+    if (cIdx === 0) {
+      deleting = false;
+      pIdx = (pIdx + 1) % phrases.length;
+      setTimeout(typewriter, 400);
+      return;
+    }
+    setTimeout(typewriter, 35);
+  }
 }
+setTimeout(typewriter, 800);
 
-typeEffect();
+/* ─── SCROLL REVEAL (IntersectionObserver) ─── */
+const revealEls = document.querySelectorAll('.reveal');
 
-/*=============================
-SCROLL PROGRESS BAR
-=============================*/
+const revealObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+      // Keep observing for skill-bar re-trigger is not needed; unobserve normal elements
+      if (!entry.target.classList.contains('skill-card')) {
+        revealObserver.unobserve(entry.target);
+      }
+    }
+  });
+}, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
 
-const progress = document.createElement("div");
+revealEls.forEach(el => revealObserver.observe(el));
 
-progress.style.position = "fixed";
-progress.style.left = "0";
-progress.style.top = "0";
-progress.style.height = "4px";
-progress.style.width = "0";
-progress.style.zIndex = "99999";
-progress.style.background =
-"linear-gradient(90deg,#8b5cf6,#22d3ee)";
-
-document.body.appendChild(progress);
-
-window.addEventListener("scroll", () => {
-
-    const total =
-        document.documentElement.scrollHeight -
-        window.innerHeight;
-
-    const percent =
-        window.scrollY / total * 100;
-
-    progress.style.width = percent + "%";
-
+/* ─── STAGGER CHILDREN ─── */
+document.querySelectorAll('.skills-grid, .projects-grid, .contact-grid').forEach(grid => {
+  Array.from(grid.children).forEach((child, i) => {
+    child.style.transitionDelay = `${i * 0.08}s`;
+  });
 });
 
-/*=============================
-SCROLL TO TOP
-=============================*/
+/* ─── PARALLAX ORBS (subtle, on mouse move) ─── */
+const orbs = document.querySelectorAll('.orb');
 
-const topBtn = document.createElement("button");
+document.addEventListener('mousemove', e => {
+  const cx = window.innerWidth / 2;
+  const cy = window.innerHeight / 2;
+  const dx = (e.clientX - cx) / cx;
+  const dy = (e.clientY - cy) / cy;
 
-topBtn.innerHTML =
-'<i class="fa-solid fa-arrow-up"></i>';
+  orbs.forEach((orb, i) => {
+    const depth = (i + 1) * 8;
+    orb.style.transform = `translate(${dx * depth}px, ${dy * depth}px)`;
+  });
+}, { passive: true });
 
-topBtn.className = "top-btn";
+/* ─── ACTIVE NAV HIGHLIGHT ─── */
+const sections = document.querySelectorAll('section[id]');
+const navLinks = document.querySelectorAll('.nav-links a');
 
-document.body.appendChild(topBtn);
+const sectionObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      navLinks.forEach(link => {
+        link.style.color = '';
+        if (link.getAttribute('href') === '#' + entry.target.id) {
+          link.style.color = 'var(--text)';
+        }
+      });
+    }
+  });
+}, { threshold: 0.45 });
 
-topBtn.style.position = "fixed";
-topBtn.style.bottom = "30px";
-topBtn.style.right = "30px";
-topBtn.style.width = "55px";
-topBtn.style.height = "55px";
-topBtn.style.borderRadius = "50%";
-topBtn.style.border = "none";
-topBtn.style.cursor = "pointer";
-topBtn.style.background =
-"linear-gradient(135deg,#8b5cf6,#2563eb)";
-topBtn.style.color = "#fff";
-topBtn.style.display = "none";
-topBtn.style.zIndex = "999";
+sections.forEach(s => sectionObserver.observe(s));
 
-window.addEventListener("scroll", () => {
-
-    if (window.scrollY > 500)
-        topBtn.style.display = "block";
-    else
-        topBtn.style.display = "none";
-
+/* ─── PROJECT CARD GLOW ON MOUSE ─── */
+document.querySelectorAll('.project-card').forEach(card => {
+  card.addEventListener('mousemove', e => {
+    const rect = card.getBoundingClientRect();
+    const x = ((e.clientX - rect.left) / rect.width) * 100;
+    const y = ((e.clientY - rect.top) / rect.height) * 100;
+    card.style.setProperty('--mouse-x', x + '%');
+    card.style.setProperty('--mouse-y', y + '%');
+  });
 });
 
-topBtn.onclick = () => {
+/* ─── SCROLL PROGRESS BAR ─── */
+const progressBar = document.createElement('div');
+progressBar.style.cssText = `
+  position: fixed; top: 0; left: 0; z-index: 9000;
+  height: 2px; width: 0%;
+  background: linear-gradient(90deg, #7c3aed, #a855f7, #06b6d4);
+  transition: width 0.1s linear;
+`;
+document.body.prepend(progressBar);
 
-    window.scrollTo({
+window.addEventListener('scroll', () => {
+  const scrollTop = window.scrollY;
+  const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+  progressBar.style.width = ((scrollTop / docHeight) * 100) + '%';
+}, { passive: true });
 
-        top:0,
-
-        behavior:"smooth"
-
-    });
-
-};
-
-/*=============================
-PARALLAX IMAGE
-=============================*/
-
-const image =
-document.querySelector(".image-box");
-
-document.addEventListener("mousemove", e=>{
-
-    const x =
-    (window.innerWidth/2-e.clientX)/40;
-
-    const y =
-    (window.innerHeight/2-e.clientY)/40;
-
-    image.style.transform =
-    `translate(${x}px,${y}px)`;
-
-});
-
-/*=============================
-AURORA PARALLAX
-=============================*/
-
-const blobs =
-document.querySelectorAll(".aurora span");
-
-document.addEventListener("mousemove",e=>{
-
-    blobs.forEach((blob,index)=>{
-
-        const speed=(index+1)*10;
-
-        blob.style.transform=
-        `translate(${e.clientX/speed}px,
-        ${e.clientY/speed}px)`;
-
-    });
-
-});
-
-/*=============================
-SKILL HOVER GLOW
-=============================*/
-
-document.querySelectorAll(".skill")
-.forEach(card=>{
-
-card.addEventListener("mousemove",e=>{
-
-const rect=
-card.getBoundingClientRect();
-
-const x=e.clientX-rect.left;
-
-const y=e.clientY-rect.top;
-
-card.style.background=
-`radial-gradient(circle at ${x}px ${y}px,
-rgba(139,92,246,.5),
-rgba(255,255,255,.08))`;
-
-});
-
-card.addEventListener("mouseleave",()=>{
-
-card.style.background=
-"rgba(255,255,255,.08)";
-
-});
-
-});
-
-/*=============================
-CUSTOM CURSOR
-=============================*/
-
-const cursor =
-document.createElement("div");
-
-cursor.style.width="18px";
-cursor.style.height="18px";
-cursor.style.borderRadius="50%";
-cursor.style.position="fixed";
-cursor.style.pointerEvents="none";
-cursor.style.background="#22d3ee";
-cursor.style.boxShadow=
-"0 0 20px #22d3ee";
-cursor.style.zIndex="999999";
-
-document.body.appendChild(cursor);
-
-window.addEventListener("mousemove",e=>{
-
-cursor.style.left=e.clientX-9+"px";
-
-cursor.style.top=e.clientY-9+"px";
-
-});
-
-/*=============================
-FLOATING EFFECT
-=============================*/
-
-gsap.to(".image-box",{
-
-y:-18,
-
-duration:3,
-
-repeat:-1,
-
-yoyo:true,
-
-ease:"power1.inOut"
-
-});
-
-/*=============================
-ROTATING SKILLS
-=============================*/
-
-gsap.utils.toArray(".skill").forEach(skill=>{
-
-gsap.from(skill,{
-
-opacity:0,
-
-y:40,
-
-duration:1,
-
-scrollTrigger:{
-
-trigger:skill,
-
-start:"top 85%"
-
-}
-
-});
-
-});
-
-/*=============================
-CONSOLE MESSAGE
-=============================*/
-
-console.log(
-"%cPortfolio designed by Thomas Joseph",
-"color:#8b5cf6;font-size:18px;font-weight:bold;"
+/* ─── CONSOLE EASTER EGG ─── */
+console.log(`
+%c  Thomas Joseph
+%c  AI & Data Science @ CUSAT
+%c  Built with HTML, CSS & Vanilla JS
+%c  github.com/thomasjoseph18
+`,
+  'color:#a855f7;font-size:1.4rem;font-weight:bold;font-family:monospace',
+  'color:#7c3aed;font-size:.9rem;font-family:monospace',
+  'color:#06b6d4;font-size:.8rem;font-family:monospace',
+  'color:#94a3b8;font-size:.8rem;font-family:monospace'
 );
