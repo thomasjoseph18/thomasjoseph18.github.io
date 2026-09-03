@@ -400,6 +400,16 @@ body:has(button:hover) .cursor-follower { border-color: var(--accent2); transfor
   border: 2px solid var(--border);
 }
 
+.avatar-photo {
+  width: 100%; height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+  object-position: center top;
+  border: 2px solid var(--border);
+  box-shadow: 0 0 40px rgba(124,58,237,.25);
+  display: block;
+}
+
 .about-text p {
   color: var(--text2); margin-bottom: 1rem; font-size: 1.05rem;
 }
