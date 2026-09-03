@@ -184,7 +184,7 @@ const progressBar = document.createElement('div');
 progressBar.style.cssText = `
   position: fixed; top: 0; left: 0; z-index: 9000;
   height: 2px; width: 0%;
-  background: linear-gradient(90deg, #7c3aed, #a855f7, #06b6d4);
+  background: linear-gradient(90deg, #059669, #10b981, #84cc16);
   transition: width 0.1s linear;
 `;
 document.body.prepend(progressBar);
@@ -202,8 +202,8 @@ console.log(`
 %c  Built with HTML, CSS & Vanilla JS
 %c  github.com/thomasjoseph18
 `,
-  'color:#a855f7;font-size:1.4rem;font-weight:bold;font-family:monospace',
-  'color:#7c3aed;font-size:.9rem;font-family:monospace',
-  'color:#06b6d4;font-size:.8rem;font-family:monospace',
+  'color:#10b981;font-size:1.4rem;font-weight:bold;font-family:monospace',
+  'color:#059669;font-size:.9rem;font-family:monospace',
+  'color:#84cc16;font-size:.8rem;font-family:monospace',
   'color:#94a3b8;font-size:.8rem;font-family:monospace'
 );
