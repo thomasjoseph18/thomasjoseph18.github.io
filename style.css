@@ -552,7 +552,41 @@ body:has(button:hover) .cursor-follower { border-color: var(--accent2); transfor
 .project-title {
   font-family: var(--font-disp); font-size: 1.1rem; font-weight: 700;
 }
-.project-desc { color: var(--text2); font-size: .93rem; flex-grow: 1; }
+.project-desc-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: .35rem;
+  flex-grow: 1;
+}
+.project-desc {
+  color: var(--text2);
+  font-size: .93rem;
+  line-height: 1.55;
+  margin: 0;
+}
+.project-desc.collapsed {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.read-more-btn {
+  background: none;
+  border: none;
+  color: var(--accent2);
+  font-family: inherit;
+  font-size: .82rem;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 0;
+  margin-top: .25rem;
+  align-self: flex-start;
+  transition: var(--transition);
+}
+.read-more-btn:hover {
+  color: var(--accent);
+  text-decoration: underline;
+}
 
 .project-footer { display: flex; justify-content: space-between; align-items: center; margin-top: auto; }
 .project-tech { display: flex; gap: .4rem; flex-wrap: wrap; }

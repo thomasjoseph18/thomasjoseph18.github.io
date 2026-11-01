@@ -204,6 +204,83 @@ const langColors = {
   "Jupyter Notebook": "#DA5B0B"
 };
 
+function extractDescriptionFromReadme(markdown) {
+  if (!markdown) return null;
+  // Remove markdown code blocks
+  let text = markdown.replace(/```[\s\S]*?```/g, '');
+  // Remove HTML comments
+  text = text.replace(/<!--[\s\S]*?-->/g, '');
+  // Remove images and badges
+  text = text.replace(/\[\!\[.*?\]\(.*?\)\]\(.*?\)/g, '');
+  text = text.replace(/\!\[.*?\]\(.*?\)/g, '');
+  // Remove raw HTML tags
+  text = text.replace(/<[^>]+>/g, '');
+  
+  const lines = text.split('\n');
+  const paragraphs = [];
+  let currentP = [];
+
+  for (const line of lines) {
+    const trimmed = line.trim();
+    if (trimmed === '') {
+      if (currentP.length > 0) {
+        paragraphs.push(currentP.join(' '));
+        currentP = [];
+      }
+    } else if (trimmed.startsWith('#') || trimmed.startsWith('==') || trimmed.startsWith('--')) {
+      if (currentP.length > 0) {
+        paragraphs.push(currentP.join(' '));
+        currentP = [];
+      }
+    } else if (!trimmed.startsWith('|')) { // skip tables
+      currentP.push(trimmed);
+    }
+  }
+  if (currentP.length > 0) {
+    paragraphs.push(currentP.join(' '));
+  }
+
+  for (const p of paragraphs) {
+    let clean = p.replace(/\[([^\]]+)\]\([^\)]+\)/g, '$1');
+    clean = clean.replace(/[*_`~]/g, '');
+    clean = clean.replace(/\s+/g, ' ').trim();
+    if (clean.length > 25) {
+      return clean;
+    }
+  }
+  return null;
+}
+
+async function fetchRepoReadme(repoName, defaultBranch) {
+  const branches = [defaultBranch || 'main', 'master', 'main'];
+  for (const branch of new Set(branches)) {
+    try {
+      const res = await fetch(`https://raw.githubusercontent.com/${GITHUB_USERNAME}/${repoName}/${branch}/README.md`);
+      if (res.ok) {
+        const text = await res.text();
+        if (text && text.trim().length > 0) {
+          const desc = extractDescriptionFromReadme(text);
+          if (desc) return desc;
+        }
+      }
+    } catch (_) {}
+  }
+  return null;
+}
+
+function attachReadMoreHandlers(container) {
+  container.querySelectorAll('.read-more-btn').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const descEl = btn.previousElementSibling;
+      if (!descEl) return;
+      const isCollapsed = descEl.classList.toggle('collapsed');
+      btn.textContent = isCollapsed ? 'Read more' : 'Read less';
+      btn.setAttribute('aria-expanded', !isCollapsed);
+    });
+  });
+}
+
 async function loadGitHubProjects() {
   const container = document.getElementById("projects-grid");
   if (!container) return;
@@ -216,11 +293,25 @@ async function loadGitHubProjects() {
     const ownRepos = repos.filter(r => !r.fork);
     if (!ownRepos.length) return;
 
-    container.innerHTML = ownRepos.map(repo => {
-      const desc = repo.description || "Open source project on GitHub.";
+    // Fetch README descriptions concurrently
+    const repoCardsData = await Promise.all(
+      ownRepos.map(async (repo) => {
+        let desc = null;
+        try {
+          desc = await fetchRepoReadme(repo.name, repo.default_branch);
+        } catch (_) {}
+        if (!desc) {
+          desc = repo.description || "Open source project on GitHub.";
+        }
+        return { repo, desc };
+      })
+    );
+
+    container.innerHTML = repoCardsData.map(({ repo, desc }) => {
       const lang = repo.language || "Code";
       const stars = repo.stargazers_count;
       const homepage = repo.homepage;
+      const isLong = desc.length > 130;
 
       return `
         <article class="project-card reveal visible">
@@ -241,7 +332,10 @@ async function loadGitHubProjects() {
               </div>
             </div>
             <h3 class="project-title">${repo.name}</h3>
-            <p class="project-desc">${desc}</p>
+            <div class="project-desc-wrap">
+              <p class="project-desc ${isLong ? 'collapsed' : ''}">${desc}</p>
+              ${isLong ? '<button class="read-more-btn" type="button" aria-expanded="false">Read more</button>' : ''}
+            </div>
             <div class="project-footer">
               <div class="project-tech">
                 <span class="tech-tag">${lang}</span>
@@ -257,11 +351,11 @@ async function loadGitHubProjects() {
     }).join("");
 
     attachCardGlow(container.querySelectorAll('.project-card'));
+    attachReadMoreHandlers(container);
   } catch (err) {
     console.error("Error loading GitHub projects:", err);
   }
 }
-
 async function loadGitHubStats() {
   const statsCard = document.getElementById("github-stats-card");
   const langsCard = document.getElementById("github-langs-card");
