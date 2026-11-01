@@ -241,9 +241,8 @@
         <span class="section-tag">04 / projects</span>
         <h2 class="section-title">My <span class="gradient-text">Projects</span></h2>
       </div>
-      <div class="projects-grid">
-
-        <article class="project-card reveal">
+      <div class="projects-grid" id="projects-grid">
+        <article class="project-card reveal visible">
           <div class="project-card-inner">
             <div class="project-header">
               <div class="project-icon">
@@ -269,7 +268,7 @@
           </div>
         </article>
 
-        <article class="project-card reveal">
+        <article class="project-card reveal visible">
           <div class="project-card-inner">
             <div class="project-header">
               <div class="project-icon">
@@ -295,7 +294,7 @@
           </div>
         </article>
 
-        <article class="project-card reveal">
+        <article class="project-card reveal visible">
           <div class="project-card-inner">
             <div class="project-header">
               <div class="project-icon">
@@ -321,7 +320,6 @@
             </div>
           </div>
         </article>
-
       </div>
     </div>
   </section>
@@ -334,19 +332,11 @@
         <h2 class="section-title">GitHub <span class="gradient-text">Stats</span></h2>
       </div>
       <div class="github-grid reveal">
-        <div class="github-card">
-          <img
-            src="https://github-readme-stats.vercel.app/api?username=thomasjoseph18&show_icons=true&theme=transparent&hide_border=true&title_color=7c3aed&icon_color=7c3aed&text_color=e2e8f0&bg_color=00000000"
-            alt="Thomas's GitHub Stats"
-            loading="lazy"
-          />
+        <div class="github-card" id="github-stats-card">
+          <div style="text-align:center;color:var(--text-muted);padding:40px 0;">Loading stats...</div>
         </div>
-        <div class="github-card">
-          <img
-            src="https://github-readme-stats.vercel.app/api/top-langs/?username=thomasjoseph18&layout=compact&theme=transparent&hide_border=true&title_color=7c3aed&text_color=e2e8f0&bg_color=00000000"
-            alt="Thomas's Top Languages"
-            loading="lazy"
-          />
+        <div class="github-card" id="github-langs-card">
+          <div style="text-align:center;color:var(--text-muted);padding:40px 0;">Loading languages...</div>
         </div>
         <div class="github-card github-card-wide">
           <img
